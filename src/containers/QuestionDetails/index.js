@@ -24,6 +24,7 @@ const QuestionDetails = (props) => {
     updatedAnswer: "",
   });
   const dispatch = useDispatch();
+  console.log(answerFields.answer);
 
   const fetchQuestion = useCallback(async () => {
     setIsLoading(true);
@@ -50,15 +51,39 @@ const QuestionDetails = (props) => {
     setShowWarning(false);
   };
 
-  /*   const submitAnswer = (e) => {
-    e.preventDefault();
+  const answerHandler = useCallback(
+    async (value, typeOfAction) => {
+      let action;
+      switch (typeOfAction) {
+        case "answer":
+          action = answerQuestion(questionId, value);
+          break;
+        case "update":
+          action = answerQuestion(questionId, value);
+          break;
+        case "delete":
+          action = answerQuestion(questionId, value);
+          break;
+        default:
+          return;
+      }
+      setError(null);
+      setIsLoading(true);
 
-    if (
-       role === "Member" &&
-     answer !== "" 
-    ) {
-      dispatch(answerQuestion(questionId,answer));
-     // window.location.reload(false);
+      try {
+        await dispatch(action);
+      } catch (err) {
+        console.log(err.message);
+      }
+
+      setIsLoading(false);
+    },
+    [dispatch, questionId, setError]
+  );
+
+  /*     if (role === "Member" && answer !== "") {
+      dispatch(answerQuestion(questionId, answer));
+      // window.location.reload(false);
       //history.push({pathname: "/my_questions"});
     } else {
       if (role === "Member") {
@@ -72,8 +97,6 @@ const QuestionDetails = (props) => {
   const question = useSelector(
     (state) => state.questions.singleQuestionDetails
   );
-
-  console.log(question);
 
   if (error) {
     return (
@@ -107,7 +130,7 @@ const QuestionDetails = (props) => {
 
   return (
     <Cards
-      component={
+      header={
         <button
           className='navbar_buttons sign_up_button_color'
           onClick={() => {}}
@@ -123,12 +146,10 @@ const QuestionDetails = (props) => {
         question.answers.map((answer) => {
           return (
             <AnswerItem
-              warning={showWarning}
-              setAnswerField={setAnswer}
-              updatedAnswer={answerFields.updatedAnswer}
               key={answer.id}
               signedInUserId={userId}
               answerData={answer}
+              answerAction={answerHandler}
             />
           );
         })}

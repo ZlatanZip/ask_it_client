@@ -6,16 +6,32 @@ import {Container, Row, Col} from "react-bootstrap";
 
 import WarningDropDownMessage from "../WarningDropDownMessage";
 import AddQuestionInput from "../AddQuestionInput";
+import {updateAnswer} from "../../lib/questions";
 
 const AnswerItem = (props) => {
-  const {signedInUserId, setAnswer, updatedAnswer, answerData, warning} = props;
+  const {signedInUserId, answerData, answerAction} = props;
+
   const {id, answer, userId, fullName, createdOn} = answerData;
 
   const [showForm, setShowForm] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [updatedAnswer, setUpdatedAnswer] = useState("");
   const responsiveButtonsClass =
     window.innerWidth > 450 ? "navbar_buttons" : "small_screen_buttons";
 
-  console.log(signedInUserId);
+  /*   const setAnswerUpdate = (e) => {
+    e.preventDefault();
+    const name = e.target.name;
+    setAnswerFileds({ [name]: e.target.value});
+    setShowWarning(false);
+  };
+ */
+  const setAnswerUpdate = (e) => {
+    const {value} = e.target;
+    setUpdatedAnswer(value);
+    setShowWarning(false);
+  };
+
   const votePositive = (role, id) => {
     if (role === "Member") {
       console.log("You voted negative");
@@ -43,19 +59,18 @@ const AnswerItem = (props) => {
           />
         </Col>
         <Col sm={8} xs={8}>
-          <Link className='question_link' to={`/questions/${id}`}>
+          <div className='question_link'>
             <span>answerd by {fullName}</span>
             <h5> {answer}</h5>
             {showForm && (
               <div>
                 <input
-                  name='updatedAnswer'
-                  placeholder='  Type in your answers update!'
+                  placeholder='  Update answer!'
                   className='update_answer_input'
-                  onChange={() => setAnswer}
+                  onChange={setAnswerUpdate}
                   value={updatedAnswer}
                 />
-                {warning && (
+                {showWarning && (
                   <WarningDropDownMessage title='To  update a answer you need to type in some proper text :) !' />
                 )}
               </div>
@@ -69,12 +84,15 @@ const AnswerItem = (props) => {
                 >
                   {!showForm ? "Edit" : "Close"}
                 </button>
-                <button className={responsiveButtonsClass} onClick={() => {}}>
+                <button
+                  className={responsiveButtonsClass}
+                  onClick={() => answerAction(updatedAnswer, "update")}
+                >
                   Delete
                 </button>
               </div>
             )}
-          </Link>
+          </div>
         </Col>
         <Col sm={2} xs={2} className='question_thumbs_wrapper'>
           <img

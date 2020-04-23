@@ -4,6 +4,7 @@ import {
   getUserQuestions,
   getSingleQuestion,
   answerAQuestion,
+  removeQuestion,
 } from "../../lib/questions";
 
 import {
@@ -46,6 +47,19 @@ export const getSingleQuestionDetails = (questionId) => {
         type: GET_SINGLE_QUESTION,
         singleQuestionData: singleQuestionData.data[0],
       });
+    } catch (err) {
+      // do something with message!
+      console.log(err.response);
+    }
+  };
+};
+
+export const deleteQuestion = (questionId) => {
+  return async (dispatch) => {
+    try {
+      const removedQuestionData = await removeQuestion(questionId);
+      console.log(removedQuestionData);
+      dispatch({type: DELETE_QUESTION, questionId: questionId});
     } catch (err) {
       // do something with message!
       console.log(err.response);
@@ -116,27 +130,6 @@ export const addNewQuestion = (data) => {
   };
 };
 
-export const deleteQuestion = (questionId) => {
-  return async (dispatch, getState) => {
-    const userData = await localStorage.getItem("userData");
-    const data = JSON.parse(userData);
-
-    const response = await fetch(`${URL}${PORT}/api/questions/${questionId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + data.token,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Some deleting issues");
-    }
-
-    dispatch({type: DELETE_QUESTION, questionId: questionId});
-  };
-};
-
 export const reviewQuestion = (questionId, votes) => {
   return async (dispatch, getState) => {
     const questions = getState().questions.allQuestions;
@@ -173,8 +166,11 @@ export const reviewQuestion = (questionId, votes) => {
 };
 
 export const answerQuestion = (questionId, answer) => {
+  console.log(answer);
   return async (dispatch) => {
-    const answeredQuestionData = await answerAQuestion(questionId, {answer});
+    const answeredQuestionData = await answerAQuestion(questionId, {
+      "answer": answer,
+    });
     console.log(answeredQuestionData);
     /*   dispatch({
       type: ANSWER_A_QUESTION,

@@ -55,8 +55,9 @@
   text-decoration: none;
 }
 .navbar_buttons:hover {
-  transform: scale(1.1);
+  /*  transform: scale(1.1); */
   font-weight: 500;
+  border: 2px solid rgb(15, 191, 214);
 }
 .sign_up_button_color {
   background-color: rgb(233, 162, 10);

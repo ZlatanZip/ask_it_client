@@ -56,9 +56,9 @@ export async function reviewAQuestion(userId) {
   return reviewAQuestionData;
 }
 
-export async function answerAQuestion(questionId) {
+export async function answerAQuestion(questionId, answer) {
   const answerAQuestionUrl = `${URL}${PORT}/api/questions/answer/${questionId}`;
-  const answerAQuestionData = await Axios.put(answerAQuestionUrl);
+  const answerAQuestionData = await Axios.put(answerAQuestionUrl, answer);
   return answerAQuestionData;
 }
 
