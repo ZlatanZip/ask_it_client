@@ -61,17 +61,18 @@ const AnswerItem = (props) => {
         transition: "1s",
       };
 
-  const widths = showForm
+  const width = showForm
     ? {
         width: "70%",
         transition: "1s",
+        textAlign: "center",
       }
-    : null;
+    : {width: "0", textAlign: "center", border: "2px solid white"};
 
   return (
     <Container>
       <Row className='answer_wrapper' style={{margin: "0 auto"}}>
-        <Col className='qusetion_logo'>
+        <Col md={3} xs={12} className='qusetion_logo'>
           <img
             id='question_mark'
             alt='question_mark'
@@ -79,16 +80,17 @@ const AnswerItem = (props) => {
           />
         </Col>
 
-        <Col sm={8} xs={8}>
+        <Col md={6} xs={12}>
           <div className='question_link'>
             <span>answerd by {fullName}</span>
             <h5> {answer}</h5>
 
             <div style={classiee}>
               <CustomForm
-                style={widths}
+                id={id}
+                showForm={showForm}
                 placeholder=' Type in updated answer!'
-                submitValue={answerAction}
+                onSubmit={answerAction}
                 typeOfAction='update'
               />
               {/*  <input
@@ -112,6 +114,7 @@ const AnswerItem = (props) => {
                 </button>
                 <button
                   className={responsiveButtonsClass}
+                  /*  onClick={() => answerAction(id, "deleteAnswer")}*/
                   onClick={() =>
                     answerAction(id, updatedAnswer, "updateAnswer")
                   }
@@ -122,7 +125,8 @@ const AnswerItem = (props) => {
             )}
           </div>
         </Col>
-        <Col sm={2} xs={2} className='question_thumbs_wrapper'>
+        <Col md={3} xs={12} className='question_thumbs_wrapper'>
+          <span>{12}</span>{" "}
           <img
             alt='thumbsUpLogo'
             className='question_thumbs'
@@ -130,14 +134,13 @@ const AnswerItem = (props) => {
             src={require("../../assets/icons/thumb_up.png")}
             onClick={votePositive}
           />
-          <span>{12}</span>
           <img
             alt='thumbsDownLogo'
             className='question_thumbs'
             onClick={() => console.log("thumb down")}
             src={require("../../assets/icons/thumb_down.png")}
             onClick={voteNegative}
-          />
+          />{" "}
           <span>{12}</span>
         </Col>
       </Row>

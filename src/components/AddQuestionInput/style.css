@@ -11,8 +11,21 @@
   transition: 1s;
 }
 
-.question_lable_active {
+.show_custom_form {
   margin: 20px 0;
+  height: 2.5rem;
+  transition: 1s;
+  text-align: center;
+}
+
+.hide_custom_form {
+  height: 0;
+  transition: 1s;
+  text-align: center;
+}
+
+.question_lable_active {
+  margin: 10px 0;
   width: 70%;
   max-width: 500px;
   height: 2.4rem;

@@ -5,8 +5,11 @@ import CustomDropDown from "../CutomDropDown";
 import WarningDropDownMessage from "../WarningDropDownMessage";
 
 const CustomForm = (props) => {
-  const {typeOfAction, submitValue, placeholder, style} = props;
+  const {id, typeOfAction, onSubmit, placeholder, showForm} = props;
+  const idOrNull = id ? id : null;
   const [inputValue, setInputValue] = useState("");
+
+  const strechInOrOutClass = showForm ? "show_custom_form" : "hide_custom_form";
 
   const setValue = (e) => {
     const {value} = e.target;
@@ -15,38 +18,30 @@ const CustomForm = (props) => {
   };
 
   return (
-    <form className='question_lable_layout' /* onSubmit={submitName} */>
-      {/*  {style && ( */}
-      <input
-        style={style}
-        name='description'
-        type='text'
-        placeholder={placeholder}
-        value={inputValue}
-        onChange={setValue}
-        className={
-          inputValue === "" ? "question_label" : "question_lable_active"
-        }
-      />
-      {/*    )} */}
-      {/*   {inputValue !== "" && (
-        <WarningDropDownMessage title='Type something and send it to hungry answerers !' />
-      )} */}
+    <form className={strechInOrOutClass} /* onSubmit={submitName} */>
+      {showForm && (
+        <div className={strechInOrOutClass}>
+          <input
+            name='description'
+            type='text'
+            placeholder={placeholder}
+            value={inputValue}
+            onChange={setValue}
+            className={
+              inputValue === "" ? "question_label" : "question_lable_active"
+            }
+          />
 
-      {typeOfAction === "addAQuestion" && (
-        <CustomDropDown onSelect={() => {}} />
+          <img
+            src={require("../../assets/icons/arrow.png")}
+            className={
+              inputValue === "" ? "question_arrow" : "question_arrow_active"
+            }
+            alt='React Bootstrap logo'
+            onClick={() => onSubmit(idOrNull, inputValue, typeOfAction)}
+          />
+        </div>
       )}
-      {/*  <FcExpand size={40} /> */}
-      {/*  {style && ( */}
-      <img
-        src={require("../../assets/icons/arrow.png")}
-        className={
-          inputValue === "" ? "question_arrow" : "question_arrow_active"
-        }
-        alt='React Bootstrap logo'
-        onClick={() => submitValue(null, inputValue, typeOfAction)}
-      />
-      {/*    )} */}
     </form>
   );
 };

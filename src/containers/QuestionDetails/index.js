@@ -10,6 +10,7 @@ import AnswerItem from "../../components/AnswerItem";
 import "./style.css";
 
 import {
+  updateAQuestion,
   getSingleQuestionDetails,
   answerQuestion,
   deleteQuestion,
@@ -24,7 +25,7 @@ const QuestionDetails = (props) => {
   const {userId, role} = props;
   const questionId = props.match.params.id;
   const [error, setError] = useState(null);
-  const [showAnswerInput, setShowAnswerInput] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [answer, setAnswer] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +71,7 @@ const QuestionDetails = (props) => {
     setShowWarning(false);
   };
  */
-  const answerHandler = useCallback(
+  const actionHandler = useCallback(
     async (id, value, typeOfAction) => {
       let action;
       switch (typeOfAction) {
@@ -78,7 +79,7 @@ const QuestionDetails = (props) => {
           action = answerQuestion(questionId, value);
           break;
         case "updateAQuestion":
-          action = answerQuestion(questionId, value);
+          action = updateAQuestion(questionId, value);
           break;
         case "deleteAQuestion":
           action = deleteQuestion(questionId, value);
@@ -113,7 +114,7 @@ const QuestionDetails = (props) => {
       } catch (err) {
         console.log(err.message);
       }
-      // window.location.reload(false);
+      window.location.reload(false);
       setIsLoading(false);
     },
     [dispatch, questionId, setError]
@@ -179,29 +180,32 @@ const QuestionDetails = (props) => {
                 ? "sign_up_button_color"
                 : "login_button_color"
             }`}
-            onClick={() => setShowAnswerInput((prevState) => !prevState)}
+            onClick={() => setShowForm((prevState) => !prevState)}
           >
             {userId === question.postedBy ? "Update question" : "Add Answer"}
           </button>
         </div>
-        {showAnswerInput && (
-          <CustomForm
-            placeholder='  Type in your answer!'
-            submitValue={answerHandler}
-            typeOfAction='addAnswer'
-          />
-        )}
+
+        <CustomForm
+          showForm={showForm}
+          placeholder='  Type in your answer!'
+          onSubmit={actionHandler}
+          typeOfAction={
+            userId === question.postedBy ? "updateAQuestion" : "addAnswer"
+          }
+        />
+
         {/*  {showWarning && (
                   <WarningDropDownMessage title='To  update a answer you need to type in some proper text :) !' />
                 )} */}
         {question &&
-          question.answers.map((answer) => {
+          question.answers.reverse().map((answer) => {
             return (
               <AnswerItem
                 key={answer.id}
                 signedInUserId={userId}
                 answerData={answer}
-                answerAction={answerHandler}
+                answerAction={actionHandler}
               />
             );
           })}

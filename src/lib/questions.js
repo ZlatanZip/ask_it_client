@@ -38,9 +38,11 @@ export async function getSingleQuestion(questionId) {
   return singleQuestionData;
 }
 
-export async function updateQuestion() {
-  const updateQuestionUrl = `${URL}${PORT}/api/questions/${userId}`;
-  const updateQuestionData = await Axios.patch(updateQuestionUrl);
+export async function updateQuestion(questionId, updatedQuestion) {
+  const updateQuestionUrl = `${URL}${PORT}/api/questions/${questionId}`;
+  const updateQuestionData = await Axios.patch(updateQuestionUrl, {
+    updatedQuestion,
+  });
   return updateQuestionData;
 }
 

@@ -1,5 +1,6 @@
 import {
   addAQuestion,
+  updateQuestion,
   getAllQuestions,
   getUserQuestions,
   getSingleQuestion,
@@ -72,7 +73,27 @@ export const getSingleQuestionDetails = (questionId) => {
   };
 };
 
+export const updateAQuestion = (questionId, updatedQuestion) => {
+  console.log(" hello from updated Question");
+  return async (dispatch) => {
+    const updateQuestionData = await updateQuestion(
+      questionId,
+      updatedQuestion
+    );
+    console.log(updateQuestionData);
+    /*   dispatch({
+      type: ANSWER_A_QUESTION,
+      questionId: resData._id,
+      updatedQuestion: resData,
+    });
+    if (!response.ok) {
+      throw new Error("Something went wrong!");
+    } */
+  };
+};
+
 export const deleteQuestion = (questionId) => {
+  console.log("delete");
   return async (dispatch) => {
     try {
       const removedQuestionData = await removeQuestion(questionId);

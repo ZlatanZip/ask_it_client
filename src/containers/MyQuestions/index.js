@@ -114,6 +114,7 @@ const MyQuestions = (props) => {
   return (
     <Card
       biggerTitle='My Questions'
+      title='Curiosity killed the cat'
       footer={
         <button
           onClick={fetchQuestions}
@@ -125,7 +126,7 @@ const MyQuestions = (props) => {
       style={{marginBottom: "5px"}}
     >
       <div className='my_questions_wrapper'>
-        {userQuestions.map((question) => (
+        {userQuestions.reverse().map((question) => (
           <QuestionItem
             key={question._id}
             signedInUserId={userId}

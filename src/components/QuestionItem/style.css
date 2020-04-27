@@ -15,17 +15,20 @@
 
 .question_link h5 {
   font-weight: 700;
+  margin-bottom: 20px;
 }
 .question_link:hover {
   color: #565673;
   text-decoration: none;
 }
 .question_thumbs_wrapper {
-  padding-top: 15px;
-  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #question_mark {
+  margin: 10px 0;
   width: 80%;
   max-width: 80px;
   min-width: 20px;
@@ -33,6 +36,8 @@
 }
 .question_thumbs {
   width: 50%;
+  max-width: 37px;
+  margin: 5px 0;
 }
 
 .question_logo {
